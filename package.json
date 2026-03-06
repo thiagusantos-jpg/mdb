@@ -1,12 +1,15 @@
 {
-  "name": "mdb",
+  "name": "dubairro-mdb",
   "version": "1.0.0",
-  "description": "Projeto conectado ao Supabase",
-  "main": "index.js",
+  "description": "DUBAIRRO MVP — Gestão de dados com sincronização Mobne",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "setup": "node setup.js"
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "node --env-file=.env backend/api/auth/login.js",
+    "build": "cd frontend && npm install && npm run build",
+    "setup": "node setup.js",
+    "health": "node index.js",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
