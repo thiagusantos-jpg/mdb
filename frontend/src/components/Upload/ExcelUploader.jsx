@@ -11,10 +11,10 @@ export function ExcelUploader({ onUploadSuccess }) {
   const uploadFile = async (file) => {
     if (!file) return;
 
-    const allowed = ['.xlsx', '.xls', '.csv'];
+    const allowed = ['.xlsx', '.xls'];
     const ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
     if (!allowed.includes(ext)) {
-      setError('Formato não suportado. Use .xlsx, .xls ou .csv');
+      setError('Formato não suportado. Use .xlsx ou .xls');
       return;
     }
 
@@ -69,11 +69,11 @@ export function ExcelUploader({ onUploadSuccess }) {
         <p className="text-gray-600 font-medium">
           Arraste um arquivo Excel aqui ou <span className="text-primary-600">clique para selecionar</span>
         </p>
-        <p className="text-gray-400 text-sm mt-1">.xlsx, .xls, .csv — máx. 10MB</p>
+        <p className="text-gray-400 text-sm mt-1">.xlsx, .xls — máx. 10MB</p>
         <input
           ref={fileInputRef}
           type="file"
-          accept=".xlsx,.xls,.csv"
+          accept=".xlsx,.xls"
           className="hidden"
           onChange={(e) => uploadFile(e.target.files[0])}
         />
