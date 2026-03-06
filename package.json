@@ -1,0 +1,16 @@
+{
+  "name": "mdb",
+  "version": "1.0.0",
+  "description": "Projeto conectado ao Supabase",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "setup": "node setup.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "dotenv": "^16.4.7",
+    "undici": "^7.22.0"
+  }
+}
