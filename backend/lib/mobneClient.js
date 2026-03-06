@@ -11,10 +11,36 @@ export const MOBNE_ENDPOINTS = {
 };
 
 /**
+ * Retorna dados mock quando MOBNE_API_KEY não está configurada.
+ */
+function mockResponse(path, params) {
+  const page = Number(params.PageNumber) || 1;
+  const size = Number(params.PageSize) || 10;
+  const mockItems = Array.from({ length: size }, (_, i) => ({
+    Id: `mock-${page}-${i + 1}`,
+    Nome: `Item Mock ${(page - 1) * size + i + 1}`,
+    Codigo: `MOCK-${String((page - 1) * size + i + 1).padStart(4, '0')}`,
+    _mock: true,
+  }));
+
+  return {
+    Data: {
+      Items: mockItems,
+      Paging: { TotalPages: 1, PageNumber: page, PageSize: size, TotalItems: size },
+    },
+  };
+}
+
+/**
  * Faz uma chamada à API Mobne usando curl (necessário por limitação de DNS no ambiente).
  * Em produção (Vercel), fetch funciona normalmente — substituir por fetch padrão.
+ * Retorna dados mock se MOBNE_API_KEY não estiver configurada.
  */
 function mobneRequest(path, params = {}) {
+  if (!MOBNE_API_KEY) {
+    return mockResponse(path, params);
+  }
+
   const query = new URLSearchParams(params).toString();
   const url = `${MOBNE_BASE_URL}/${path}${query ? `?${query}` : ''}`;
 
