@@ -29,18 +29,18 @@ export default function UploadPage() {
               <div>
                 <p className="text-green-800 font-medium">Upload realizado com sucesso!</p>
                 <p className="text-green-600 text-sm mt-1">
-                  {lastUpload.upload?.rowCount?.toLocaleString('pt-BR')} linhas importadas
-                  {lastUpload.upload?.sheetName && ` (aba: ${lastUpload.upload.sheetName})`}
+                  {lastUpload?.rowCount?.toLocaleString('pt-BR')} linhas importadas
+                  {lastUpload?.sheetName && ` (aba: ${lastUpload.sheetName})`}
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {lastUpload?.upload?.id && (
+        {lastUpload?.uploadId && (
           <div className="card">
             <h3 className="font-semibold text-gray-800 mb-4">Dados importados</h3>
-            <DataTable uploadId={lastUpload.upload.id} />
+            <DataTable uploadId={lastUpload.uploadId} />
           </div>
         )}
       </div>

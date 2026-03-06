@@ -9,7 +9,7 @@ INSERT INTO users (id, email, password_hash, nome, role)
 VALUES (
   'a0000000-0000-0000-0000-000000000001',
   'admin@dubairro.com',
-  '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMqJqhcanFp8.e5bLJiX/VH.am',
+  '$2b$12$quD0e3CZV//0FGYJ42KtB.W42qUgT6Nr0DDGXfReCdXNyYMwfxr7W',
   'Administrador',
   'admin'
 ) ON CONFLICT (email) DO NOTHING;
@@ -20,7 +20,7 @@ INSERT INTO users (id, email, password_hash, nome, role)
 VALUES (
   'a0000000-0000-0000-0000-000000000002',
   'user@dubairro.com',
-  '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uAnc/W6Ca',
+  '$2b$12$KnkQfSgwxsK7FJdBtSfUG.WYBd3YQMp8AJLuPu5BDlrxbH7ugYn3q',
   'Usuário Teste',
   'user'
 ) ON CONFLICT (email) DO NOTHING;

@@ -45,14 +45,19 @@ export function DataTable({ uploadId, source }) {
     const params = new URLSearchParams();
     if (uploadId) params.set('upload_id', uploadId);
     if (source) params.set('source', source);
-    const token = localStorage.getItem('accessToken');
-    const url = `/api/data/export?${params}`;
-    const a = document.createElement('a');
-    a.href = url;
-    a.setAttribute('download', '');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    try {
+      const { data: blob } = await api.get(`/data/export?${params}`, { responseType: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'export.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erro ao exportar:', err);
+    }
   };
 
   return (
