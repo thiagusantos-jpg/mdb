@@ -1,25 +1,14 @@
 {
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd backend && npm install",
+  "installCommand": "npm install",
   "functions": {
-    "backend/api/**/*.js": {
-      "maxDuration": 30
+    "api/**/*.js": {
+      "maxDuration": 30,
+      "memory": 512
     }
   },
   "rewrites": [
-    { "source": "/api/auth/login", "destination": "/backend/api/auth/login" },
-    { "source": "/api/auth/validate", "destination": "/backend/api/auth/validate" },
-    { "source": "/api/auth/logout", "destination": "/backend/api/auth/logout" },
-    { "source": "/api/upload/excel", "destination": "/backend/api/upload/excel" },
-    { "source": "/api/data/list", "destination": "/backend/api/data/list" },
-    { "source": "/api/data/search", "destination": "/backend/api/data/search" },
-    { "source": "/api/data/export", "destination": "/backend/api/data/export" },
-    { "source": "/api/sync/mobne", "destination": "/backend/api/sync/mobne" },
-    { "source": "/api/sync/status", "destination": "/backend/api/sync/status" },
-    { "source": "/api/reports/sales", "destination": "/backend/api/reports/sales" },
-    { "source": "/api/reports/metrics", "destination": "/backend/api/reports/metrics" },
-    { "source": "/api/cron/mobneSync", "destination": "/backend/api/cron/mobneSync" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "crons": [
