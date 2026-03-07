@@ -13,12 +13,12 @@ function generateMockBilling(dataInicio, dataFim) {
   let id = 1;
 
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    const pedidosDoDia = Math.floor(Math.random() * 15) + 3;
-    for (let i = 0; i < pedidosDoDia; i++) {
+    const cuponsNoDia = Math.floor(Math.random() * 20) + 5;
+    for (let i = 0; i < cuponsNoDia; i++) {
       items.push({
         Id: `mock-${id++}`,
         dataEmissao: d.toISOString().slice(0, 10),
-        valorTotal: parseFloat((Math.random() * 800 + 50).toFixed(2)),
+        valorTotal: parseFloat((Math.random() * 300 + 20).toFixed(2)),
         _mock: true,
       });
     }
@@ -27,7 +27,7 @@ function generateMockBilling(dataInicio, dataFim) {
   return { Data: { Items: items, Paging: { TotalPages: 1, PageNumber: 1, TotalItems: items.length } } };
 }
 
-async function fetchPedidosVenda(dataInicio, dataFim) {
+async function fetchCuponsFiscais(dataInicio, dataFim) {
   if (!MOBNE_API_KEY) {
     return generateMockBilling(dataInicio, dataFim);
   }
@@ -44,7 +44,7 @@ async function fetchPedidosVenda(dataInicio, dataFim) {
       DataFim: dataFim,
     });
 
-    const response = await fetch(`${MOBNE_BASE_URL}/PedidoVenda?${params}`, {
+    const response = await fetch(`${MOBNE_BASE_URL}/CupomFiscal/consulta?${params}`, {
       headers: {
         Authorization: `ApiKey ${MOBNE_API_KEY}`,
         empresaId: EMPRESA_ID,
@@ -68,11 +68,22 @@ function groupByDay(items) {
   const map = {};
 
   for (const item of items) {
-    const date = (item.dataEmissao || item.DataEmissao || '').slice(0, 10);
+    // Cupom Fiscal: tenta campos em camelCase e PascalCase
+    const date = (
+      item.dataEmissao || item.DataEmissao ||
+      item.dataCupom   || item.DataCupom   ||
+      item.dataVenda   || item.DataVenda   || ''
+    ).slice(0, 10);
     if (!date) continue;
 
+    const valor = parseFloat(
+      item.valorTotal  || item.ValorTotal  ||
+      item.valorCupom  || item.ValorCupom  ||
+      item.valorFiscal || item.ValorFiscal || 0
+    );
+
     if (!map[date]) map[date] = { total: 0, count: 0 };
-    map[date].total += parseFloat(item.valorTotal || item.ValorTotal || 0);
+    map[date].total += valor;
     map[date].count += 1;
   }
 
@@ -102,13 +113,13 @@ export default async function handler(req, res) {
   const dataFim = req.query.dataFim || hoje;
 
   try {
-    const { Data } = await fetchPedidosVenda(dataInicio, dataFim);
+    const { Data } = await fetchCuponsFiscais(dataInicio, dataFim);
     const items = Data?.Items || [];
     const daily = groupByDay(items);
 
     const totalFaturado = daily.reduce((sum, d) => sum + d.total, 0);
-    const totalPedidos = daily.reduce((sum, d) => sum + d.count, 0);
-    const ticketMedioGeral = totalPedidos > 0 ? parseFloat((totalFaturado / totalPedidos).toFixed(2)) : 0;
+    const totalCupons = daily.reduce((sum, d) => sum + d.count, 0);
+    const ticketMedioGeral = totalCupons > 0 ? parseFloat((totalFaturado / totalCupons).toFixed(2)) : 0;
 
     return successResponse(res, {
       dataInicio,
@@ -116,7 +127,7 @@ export default async function handler(req, res) {
       daily,
       kpis: {
         totalFaturado: parseFloat(totalFaturado.toFixed(2)),
-        totalPedidos,
+        totalCupons,
         ticketMedio: ticketMedioGeral,
         diasComVenda: daily.length,
       },
