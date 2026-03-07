@@ -132,7 +132,7 @@ export function BillingChart() {
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <KpiCard label="Total Faturado" value={fmt(data.kpis.totalFaturado)} color="text-blue-700" />
-          <KpiCard label="Pedidos" value={data.kpis.totalPedidos.toLocaleString('pt-BR')} />
+          <KpiCard label="Cupons Emitidos" value={(data.kpis.totalCupons ?? data.kpis.totalPedidos ?? 0).toLocaleString('pt-BR')} />
           <KpiCard label="Ticket Médio" value={fmt(data.kpis.ticketMedio)} color="text-green-600" />
           <KpiCard label="Dias com Venda" value={data.kpis.diasComVenda.toString()} color="text-purple-600" />
         </div>
@@ -170,7 +170,7 @@ export function BillingChart() {
                   <td className="py-2 text-gray-700">
                     {new Date(d.date + 'T12:00:00').toLocaleDateString('pt-BR')}
                   </td>
-                  <td className="py-2 text-right text-gray-600">{d.count}</td>
+                  <td className="py-2 text-right text-gray-600">{d.count} cupons</td>
                   <td className="py-2 text-right text-gray-600">{fmt(d.ticketMedio)}</td>
                   <td className="py-2 text-right font-semibold text-blue-700">{fmt(d.total)}</td>
                 </tr>
