@@ -68,7 +68,6 @@ function groupByDay(items) {
   const map = {};
 
   for (const item of items) {
-    // Cupom Fiscal: tenta campos em camelCase e PascalCase
     const date = (
       item.dataEmissao || item.DataEmissao ||
       item.dataCupom   || item.DataCupom   ||
@@ -76,10 +75,12 @@ function groupByDay(items) {
     ).slice(0, 10);
     if (!date) continue;
 
+    // Vlr. Líquido é o valor correto (bruto menos descontos, mais acréscimos)
     const valor = parseFloat(
-      item.valorTotal  || item.ValorTotal  ||
-      item.valorCupom  || item.ValorCupom  ||
-      item.valorFiscal || item.ValorFiscal || 0
+      item.valorLiquido || item.ValorLiquido ||
+      item.vlrLiquido   || item.VlrLiquido   ||
+      item.valorTotal   || item.ValorTotal   ||
+      item.valorCupom   || item.ValorCupom   || 0
     );
 
     if (!map[date]) map[date] = { total: 0, count: 0 };
