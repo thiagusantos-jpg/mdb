@@ -68,7 +68,13 @@ function groupByDay(items) {
   const map = {};
 
   for (const item of items) {
-    // Cupom Fiscal: tenta campos em camelCase e PascalCase
+    // Filtra apenas Cupom Fiscal emitido (exclui Nota Fiscal PDV e cancelados)
+    const tipo     = (item.tipo      || item.Tipo      || '').toUpperCase();
+    const situacao = (item.situacao  || item.Situacao  || item.situação || item.Situação || '').toUpperCase();
+
+    if (tipo     && tipo     !== 'CUPOM FISCAL') continue;
+    if (situacao && situacao !== 'EMITIDO')      continue;
+
     const date = (
       item.dataEmissao || item.DataEmissao ||
       item.dataCupom   || item.DataCupom   ||
@@ -76,10 +82,12 @@ function groupByDay(items) {
     ).slice(0, 10);
     if (!date) continue;
 
+    // Vlr. Líquido é o valor correto (bruto menos descontos, mais acréscimos)
     const valor = parseFloat(
-      item.valorTotal  || item.ValorTotal  ||
-      item.valorCupom  || item.ValorCupom  ||
-      item.valorFiscal || item.ValorFiscal || 0
+      item.valorLiquido || item.ValorLiquido ||
+      item.vlrLiquido   || item.VlrLiquido   ||
+      item.valorTotal   || item.ValorTotal   ||
+      item.valorCupom   || item.ValorCupom   || 0
     );
 
     if (!map[date]) map[date] = { total: 0, count: 0 };
