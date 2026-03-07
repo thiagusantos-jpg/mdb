@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { DashboardLayout } from '../components/Dashboard/DashboardLayout.jsx';
 import { SalesReport } from '../components/Reports/SalesReport.jsx';
 import { MetricsChart } from '../components/Reports/MetricsChart.jsx';
+import { BillingChart } from '../components/Reports/BillingChart.jsx';
 
 export default function ReportsPage() {
-  const [tab, setTab] = useState('metrics');
+  const [tab, setTab] = useState('billing');
 
   return (
     <DashboardLayout>
@@ -18,6 +19,7 @@ export default function ReportsPage() {
         <div className="border-b border-gray-200">
           <div className="flex gap-4">
             {[
+              { key: 'billing', label: 'Faturamento Diário' },
               { key: 'metrics', label: 'Métricas e Gráficos' },
               { key: 'sales', label: 'Relatório de Dados' },
             ].map(({ key, label }) => (
@@ -36,6 +38,7 @@ export default function ReportsPage() {
           </div>
         </div>
 
+        {tab === 'billing' && <BillingChart />}
         {tab === 'metrics' && <MetricsChart />}
         {tab === 'sales' && <SalesReport />}
       </div>
