@@ -68,13 +68,6 @@ function groupByDay(items) {
   const map = {};
 
   for (const item of items) {
-    // Filtra apenas Cupom Fiscal emitido (exclui Nota Fiscal PDV e cancelados)
-    const tipo     = (item.tipo      || item.Tipo      || '').toUpperCase();
-    const situacao = (item.situacao  || item.Situacao  || item.situação || item.Situação || '').toUpperCase();
-
-    if (tipo     && tipo     !== 'CUPOM FISCAL') continue;
-    if (situacao && situacao !== 'EMITIDO')      continue;
-
     const date = (
       item.dataEmissao || item.DataEmissao ||
       item.dataCupom   || item.DataCupom   ||
