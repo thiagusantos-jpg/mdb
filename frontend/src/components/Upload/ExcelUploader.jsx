@@ -40,7 +40,8 @@ export function ExcelUploader({ onUploadSuccess }) {
       setProgress(100);
       onUploadSuccess?.(data);
     } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao fazer upload.');
+      const msg = err.response?.data?.error;
+      setError(typeof msg === 'string' ? msg : 'Erro ao fazer upload.');
     } finally {
       setUploading(false);
       setTimeout(() => setProgress(0), 1500);

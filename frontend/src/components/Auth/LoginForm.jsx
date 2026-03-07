@@ -16,7 +16,8 @@ export function LoginForm({ onSuccess }) {
       await login(email, password);
       onSuccess?.();
     } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao fazer login. Tente novamente.');
+      const msg = err.response?.data?.error;
+      setError(typeof msg === 'string' ? msg : 'Erro ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);
     }
