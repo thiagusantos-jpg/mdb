@@ -1,0 +1,8 @@
+# Coletor VTEX (F02)
+requests>=2.31
+
+# Opcional — só para importar planilha .xlsx. CSV funciona sem nada instalado.
+# openpyxl>=3.1
+
+# Fase 4 (matching), ainda não implementada:
+# rapidfuzz>=3.6
